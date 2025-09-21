@@ -1,0 +1,28 @@
+Funciones permitidas: read, strlen, malloc, calloc, realloc, free, printf, perror
+
+Escribe un programa que reciba exactamente un argumento s.
+
+Tu programa deberá leer desde la entrada estándar (stdin) y escribir todo el contenido
+leído en la salida estándar (stdout), excepto que cada aparición de s debe ser reemplazada por *.
+
+Ejemplo:
+
+./filter bonjour
+
+
+Se comportará igual que:
+
+sed 's/bonjour/*******/g'
+
+
+En caso de error durante el read o durante un malloc, deberás escribir "Error: " seguido del
+mensaje de error en la salida de error estándar (stderr) y devolver 1.
+
+Ejemplo de ejecución:
+
+$> echo 'abcdefgaaaabcdefabc' | ./filter abc | cat -e
+***defgaaa***def***
+
+
+Si el programa se llama sin argumentos, o con un argumento vacío, o con múltiples argumentos,
+debe devolver 1.

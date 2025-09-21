@@ -1,0 +1,131 @@
+/*Nombre del ejercicio: ft_scanf
+Archivos esperados: ft_scanf.c
+Funciones permitidas: fgetc, ungetc, ferror, feof, isspace, isdigit, stdin, va_start, va_arg, va_copy, va_end
+
+Descripción
+
+Escribe una función llamada ft_scanf que imite el comportamiento del scanf real, con las siguientes restricciones:
+
+Solo manejará las conversiones s, d y c.
+
+No necesitas manejar las opciones especiales *, m ni '.
+
+No necesitas manejar el ancho máximo de campo.
+
+No necesitas manejar los modificadores de tipo (h, hh, l, etc.).
+
+No necesitas manejar conversiones que comiencen con %n$.
+
+La función debe declararse así:
+
+int ft_scanf(const char *, ... );
+
+
+En este directorio encontrarás un archivo que contiene parte del código que necesitarás; solo tienes que completarlo.
+
+Para probar tu programa, compáralo con el scanf real.
+
+Pista: puede que necesites consultar el manual de scanf (man scanf).
+
+#include <stdarg.h> // Para manejar argumentos variables (...)
+#include <stdio.h>
+#include <ctype.h>  // isspace, isdigit
+
+// Detecta y salta espacios en el flujo de entrada
+int match_space(FILE *f)
+{
+        // Aquí puedes insertar tu código
+    return (0);
+}
+
+// Comprueba si el siguiente carácter coincide con c
+int match_char(FILE *f, char c)
+{
+        // Aquí puedes insertar tu código
+    return (0);
+}
+
+// Lee un carácter y lo almacena mediante va_list
+int scan_char(FILE *f, va_list ap)
+{
+        // Aquí puedes insertar tu código
+    return (0);
+}
+
+// Lee un entero y lo almacena mediante va_list
+int scan_int(FILE *f, va_list ap)
+{
+        // Aquí puedes insertar tu código
+    return (0);
+}
+
+// Lee una cadena de caracteres y la almacena mediante va_list
+int scan_string(FILE *f, va_list ap)
+{
+        // Aquí puedes insertar tu código
+    return (0);
+}
+
+// Decide qué función de lectura usar según la conversión
+int match_conv(FILE *f, const char **format, va_list ap)
+{
+	switch (**format)
+	{
+		case 'c':
+			return scan_char(f, ap);
+		case 'd':
+			match_space(f);
+			return scan_int(f, ap);
+		case 's':
+			match_space(f);
+			return scan_string(f, ap);
+		case EOF:
+			return -1;
+		default:
+			return -1;
+	}
+}
+
+// Función que recorre el formato y llama a las funciones de conversión
+int ft_vfscanf(FILE *f, const char *format, va_list ap)
+{
+	int nconv = 0;
+
+	int c = fgetc(f);
+	if (c == EOF)
+		return EOF;
+	ungetc(c, f); // devuelve el carácter al flujo
+
+	while (*format)
+	{
+		if (*format == '%')
+		{
+			format++;
+			if (match_conv(f, &format, ap) != 1)
+				break;
+			else
+				nconv++;
+		}
+		else if (isspace(*format))
+		{
+			if (match_space(f) == -1)
+				break;
+		}
+		else if (match_char(f, *format) != 1)
+			break;
+		format++;
+	}
+	
+	if (ferror(f))
+		return EOF;
+	return nconv;
+}
+
+// Función que el usuario llama, equivalente a scanf
+int ft_scanf(const char *format, ...)
+{
+	// Se inicia va_list
+	int ret = ft_vfscanf(stdin, format, ap); // usa stdin como flujo
+	// ...
+	return ret;
+}*/
