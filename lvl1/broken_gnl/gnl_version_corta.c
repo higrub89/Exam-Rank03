@@ -50,6 +50,7 @@ char *get_next_line(int fd)
   return (line);
 }
 
+/*EL Main no se entrega, te harán un main propio.*/
 int main(void)
 {
   int fd = open("test.txt", O_RDONLY);
