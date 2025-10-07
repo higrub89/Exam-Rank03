@@ -1,92 +1,53 @@
 #include <unistd.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 
-bool is_solution(int n, int k)
+int is_safe(int *positions, int current_col, int current_row)
 {
-  return (k == n);
+	for (int prev_col = 0; prev_col < current_col; prev_col++)
+	{
+		int prev_row = positions[prev_col];
+		if (prev_row == current_row ||
+			prev_row - prev_col == current_row - current_col ||
+			prev_row + prev_col == current_row + current_col)
+			return 0;
+	}
+	return 1;
 }
 
-void print_solution(int *a, int n)
+void solve(int *positions, int col, int n)
 {
-  int i;
-
-  i = -1;
-  while (++i < n)
-  {
-    fprintf(stdout, "%d", a[i]);
-    if (i < n - 1)
-      fprintf(stdout, " ");
-  }
-  fprintf(stdout, "\n");
-}
-
-bool is_safe(int *a, int k, int candidate)
-{
-  int i;
-
-  i = -1;
-  while(++i < k)
-  {
-    if (a[i] == candidate || a[i] -i == candidate - k
-      || a[i] + i == candidate + k)
-      return (false);
-  }
-  return (true);
-}
-
-void build_candidate(int *a, int k, int n, int *candidate, int *nc)
-{
-  int col;
-
-  *nc = 0;
-  col = -1;
-  while (++col < n)
-  {
-    if (is_safe(a, k, col))
-    {
-      candidate[*nc] = col;
-      (*nc)++;
-    }
-  }
-}
-
-void make_move(int *a, int k, int value)
-{
-  a[k] = value;
-}
-
-void n_queen(int *a, int k, int n)
-{
-  int candidate[n];
-  int nc;
-  int i;
-
-  if (is_solution(n, k))
-    print_solution(a, n);
-  else
-  {
-    build_candidate(a, k, n, candidate, &nc);
-    i = -1;
-    while(++i < nc)
-    {
-      make_move(a, k, candidate[i]);
-      n_queen(a, k + 1, n);
-    }
-  }
+	if (col == n)
+	{
+	   for (int i = 0; i < n; i++)
+		{
+			if (i > 0)
+				printf(" ");
+			printf("%d", positions[i]);
+		}
+		printf("\n");
+		return;
+	}
+	for(int row = 0; row < n; row++)
+	{
+		if(is_safe(positions, col, row))
+		{
+			positions[col] = row;
+			solve(positions, col + 1, n);
+		}
+	}
 }
 
 int main(int ac, char **av)
 {
-  int n = atoi(av[1]);
-  int a[n];
-
-  if (ac != 2)
-    return (1);
-  if (n <= 0)
-    return (1);
-  n_queen(a, 0, n);
-  return (0);
+	if(ac == 2 && av[1][0] != '-')
+	{
+		int n = atoi(av[1]);
+		int *positions = malloc(sizeof(int) * n);
+		if (!positions)
+			return 1;
+		solve(positions, 0, n);
+		free(positions);
+	}
+	return 0;
 }
