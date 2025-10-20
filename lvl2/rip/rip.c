@@ -25,12 +25,12 @@ void rip(char *s, int m_fix, int n_fix, int pos)
         puts(s);
         return ;
     }
-    for(int i = pos; s[i]; i++)
+    for (int i = pos; s[i]; i++)
     {
         if (s[i] == '(' || s[i] == ')')
         {
             int c = s[i];
-            s[i] = ' ';
+            s[i] = '_';
             rip(s, m_fix, n_fix + 1, i);
             s[i] = c;
         }
